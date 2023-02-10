@@ -1,4 +1,4 @@
-name: ci
+name: Deploy API
 
 # Author: @minff
 # Issue : n/a
@@ -12,26 +12,32 @@ on:
     # The branches below must be a subset of the branches above
     branches: [main]
 
+env:
+  NODE_OPTIONS: '--max_old_space_size=4096'
+
 jobs:
-  build:
+  deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
     - name: Checkout main repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
     - name: Checkout api repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
       with:
         repository: MobiDataLab/mdl-catalog-api
+        path: mdl-catalog-api
     - name: Checkout cache repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
       with:
         repository: APIs-guru/openapi-directory
         ref: refs/heads/gh-pages
+        path: openapi-directory
     - name: Copy apis and cache
       run: |
-        cp -r ../mdl-catalog-api/* ./
+        cp -r ./mdl-catalog-api/* ./
         mkdir -p ./deploy/v2
-        cp -r ../openapi-directory/v2/cache ./deploy/v2
+        cp -r ./openapi-directory/v2/cache ./deploy/v2
     - uses: actions/setup-node@v1 # setup Node.js
       with:
         node-version: '16.x'
