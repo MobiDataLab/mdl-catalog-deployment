@@ -7,7 +7,7 @@ name: ci
 # run this on push to main
 on:
   push:
-    branches: [main, dev]
+    branches: [main]
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [main]
@@ -21,8 +21,7 @@ jobs:
     - name: Checkout api repo
       uses: actions/checkout@v1
       with:
-        repository: minff/mdl-catalog-api
-        ref: refs/heads/dev
+        repository: MobiDataLab/mdl-catalog-api
     - name: Checkout cache repo
       uses: actions/checkout@v1
       with:
@@ -50,5 +49,5 @@ jobs:
         ssh-key: ${{ secrets.DEPLOY_KEY }}
         git-config-name: github-actions[bot]
         git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
-        repository-name: minff/mdl-catalog-api
+        repository-name: MobiDataLab/mdl-catalog-api
         single-commit: true

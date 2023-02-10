@@ -1,1 +1,1 @@
-# [Documentation has been moved here.](https://minff.github.io/mdl-catalog-api/api-doc/)
+# [Documentation has been moved here.](https://mobidatalab.github.io/mdl-catalog-api/api-doc/)

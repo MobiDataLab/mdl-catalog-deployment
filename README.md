@@ -13,7 +13,7 @@
 <a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/openapi-directory/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/openapi-directory/sponsors/badge.svg" /></a> <a href="#partners" alt="Partners on Open Collective"><img src="https://opencollective.com/openapi-directory/partner/badge.svg" /></a>
 
 Directory of API definitions in [OpenAPI(fka Swagger)](https://openapis.org) [2.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md) and [3.0](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md) formats.<BR>
-API access to collection: [Go!][apiDoc-link] - We also have an [RSS Feed](http://minff.github.io/mdl-catalog-api/v2/list.rss)
+API access to collection: [Go!][apiDoc-link] - We also have an [RSS Feed](http://mobidatalab.github.io/mdl-catalog-api/v2/list.rss)
 
 [![Add API][addAPI-image]][addAPI-link]
 
@@ -109,20 +109,20 @@ Some definitions are taken from Open Source projects:
  - [amardeshbd/medium-api-specification](https://github.com/amardeshbd/medium-api-specification) - OpenAPI 2.0 description for Medium API
  - [faragorn/open-api-specs](https://github.com/faragorn/open-api-specs) - OpenAPI definition for the Giphy API
 
-[banner]: https://minff.github.io/mdl-catalog-api/branding/banner.svg "APIs.guru"
+[banner]: https://mobidatalab.github.io/mdl-catalog-api/branding/banner.svg "APIs.guru"
 [twitter-image]: https://img.shields.io/twitter/url/http/APIs.guru.svg?style=social
 [twitter-link]: https://twitter.com/intent/tweet?text=http%3A%2F%2FAPIs.guru%20-%20Wikipedia%20for%20%23Web%20%23APIs%20by%20@APIs_guru%20pic.twitter.com/UhlhbMw1NP
 [twitterFollow-image]: https://img.shields.io/twitter/follow/APIs_guru.svg?style=social
 [twitterFollow-link]: https://twitter.com/intent/follow?screen_name=APIs_guru
 [slack-image]: https://img.shields.io/badge/Slack-Mermade-brightgreen
 [slack-link]: https://join.slack.com/t/mermade/shared_invite/zt-g78g7xir-MLE_CTCcXCdfJfG3CJe9qA
-[numApis-image]: https://minff.github.io/mdl-catalog-api/badges/apis_in_collection.svg
-[numSpecs-image]: https://minff.github.io/mdl-catalog-api/badges/openapi_specs.svg
-[endpoints-image]: https://minff.github.io/mdl-catalog-api/badges/endpoints.svg
+[numApis-image]: https://mobidatalab.github.io/mdl-catalog-api/badges/apis_in_collection.svg
+[numSpecs-image]: https://mobidatalab.github.io/mdl-catalog-api/badges/openapi_specs.svg
+[endpoints-image]: https://mobidatalab.github.io/mdl-catalog-api/badges/endpoints.svg
 [apisDir-link]: ./APIs
 [addAPI-image]: https://cloud.githubusercontent.com/assets/8336157/15861614/7e31511a-2cd5-11e6-8b79-38ad0f61e598.png
-[addAPI-link]: https://minff.github.io/mdl-catalog-api/add-api/
-[apiDoc-link]: https://minff.github.io/mdl-catalog-api/api-doc/
+[addAPI-link]: https://mobidatalab.github.io/mdl-catalog-api/add-api/
+[apiDoc-link]: https://mobidatalab.github.io/mdl-catalog-api/api-doc/
 
 ## Contributors
 

@@ -32,4 +32,4 @@ hooks-worker-handler-host: 127.0.0.1
 hooks-worker-handler-port: 61321
 config: ./dredd.yml
 blueprint: resources/apis_guru_swagger.yaml
-endpoint: 'https://minff.github.io/mdl-catalog-api/v2'
+endpoint: 'https://mobidatalab.github.io/mdl-catalog-api/v2'

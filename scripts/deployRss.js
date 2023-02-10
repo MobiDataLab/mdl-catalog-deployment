@@ -17,7 +17,7 @@ function finish(data) {
 	rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
 	rss.channel = {};
 	rss.channel.title = 'APIs.guru OpenAPI directory RSS feed';
-  rss.channel.link = 'https://minff.github.io/mdl-catalog-api/v2/list.rss';
+  rss.channel.link = 'https://mobidatalab.github.io/mdl-catalog-api/v2/list.rss';
 	rss.channel["atom:link"] = {};
 	rss.channel["atom:link"]["@rel"] = 'self';
 	rss.channel["atom:link"]["@href"] = rss.channel.link;
