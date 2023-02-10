@@ -12,13 +12,12 @@ on:
     # The branches below must be a subset of the branches above
     branches: [main]
 
-env:
-  NODE_OPTIONS: '--max_old_space_size=4096'
-
 jobs:
   deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max_old_space_size=4096
     steps:
     - name: Checkout main repo
       uses: actions/checkout@v3
@@ -38,9 +37,9 @@ jobs:
         cp -r ./mdl-catalog-api/* ./
         mkdir -p ./deploy/v2
         cp -r ./openapi-directory/v2/cache ./deploy/v2
-    - uses: actions/setup-node@v1 # setup Node.js
+    - uses: actions/setup-node@v3
       with:
-        node-version: '16.x'
+        node-version: 16
     - name: Install deps
       run: npm i
     - name: Run test
