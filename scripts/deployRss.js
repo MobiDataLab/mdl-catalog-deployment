@@ -17,13 +17,13 @@ function finish(data) {
 	rss["@xmlns:atom"] = 'http://www.w3.org/2005/Atom';
 	rss.channel = {};
 	rss.channel.title = 'APIs.guru OpenAPI directory RSS feed';
-  rss.channel.link = 'https://minff.github.io/catalog-deployment/v2/list.rss';
+  rss.channel.link = 'https://minff.github.io/mdl-catalog-api/v2/list.rss';
 	rss.channel["atom:link"] = {};
 	rss.channel["atom:link"]["@rel"] = 'self';
 	rss.channel["atom:link"]["@href"] = rss.channel.link;
 	rss.channel["atom:link"]["@type"] = 'application/rss+xml';
 	rss.channel.description = 'APIs.guru OpenAPI directory RSS feed';
-	rss.channel.webMaster = 'mike.ralphson@gmail.com (Mike Ralphson)';
+	rss.channel.webMaster = 'huyminh.nguyen@here.com (Mike Ralphson)';
 	rss.channel.pubDate = new Date().toUTCString();
 	rss.channel.generator = 'openapi-directory https://github.com/apis-guru/openapi-directory';
 	rss.channel.item = [];

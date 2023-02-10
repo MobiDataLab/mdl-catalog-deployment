@@ -7,7 +7,7 @@ First of all, thank you for considering making a contribution to the project.
 To add an API to the collection, there must be a machine-readable API description in a format which is or can be converted to OpenAPI (Swagger). These include RAML, API Blueprint, IO Docs, WADL and Google Discovery Format.
 
 First please check that the API you wish to add isn't already in the collection. You can
-browse the APIs in [GitHub](https://github.com/APIs-guru/openapi-directory/tree/master/APIs) or on the [APIs.guru](https://apis.guru/browse-apis/) website.
+browse the APIs in [GitHub](https://github.com/APIs-guru/openapi-directory/tree/master/APIs) or on the [APIs.guru](https://minff.github.io/mdl-catalog-api/browse-apis/) website.
 
 Please also check the API isn't in the process of being added, by checking the [list of open issues](https://github.com/APIs-guru/openapi-directory/issues).
 
@@ -17,7 +17,7 @@ The API should meet the following criteria:
 * Persistent - API is made with long-lived goal, and not for a particular event (conference, hackathon, etc.).
 * Useful - API should provide useful functionality not only for its owner.
 
-The easiest way to request an API to be added is to use the [web form](https://apis.guru/add-api/).
+The easiest way to request an API to be added is to use the [web form](https://minff.github.io/mdl-catalog-api/add-api/).
 
 ### Adding an API via a Pull-Request
 

@@ -34,7 +34,7 @@ function deployDir(path) {
 
 function rootUrl(url) {
   assert(_.isString(url) && url[0] !== '/');
-  return URI('https://minff.github.io/catalog-deployment/v2/' + url).href();
+  return URI('https://minff.github.io/mdl-catalog-api/v2/' + url).href();
 }
 
 var apisGuruSwagger = util.readYaml('resources/apis_guru_swagger.yaml');

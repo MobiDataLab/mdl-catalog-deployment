@@ -1,0 +1,54 @@
+name: ci
+
+# Author: @minff
+# Issue : n/a
+# Desc  : This workflow runs a build on pushes to main and prs
+
+# run this on push to main
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout main repo
+      uses: actions/checkout@v1
+    - name: Checkout api repo
+      uses: actions/checkout@v1
+      with:
+        repository: minff/mdl-catalog-api
+        ref: refs/heads/dev
+    - name: Checkout cache repo
+      uses: actions/checkout@v1
+      with:
+        repository: APIs-guru/openapi-directory
+        ref: refs/heads/gh-pages
+    - name: Copy apis and cache
+      run: |
+        cp -r ../mdl-catalog-api/* ./
+        mkdir -p ./deploy/v2
+        cp -r ../openapi-directory/v2/cache ./deploy/v2
+    - uses: actions/setup-node@v1 # setup Node.js
+      with:
+        node-version: '16.x'
+    - name: Install deps
+      run: npm i
+    - name: Run test
+      run: npm run test
+    - name: Run deploy
+      run: npm run deploy
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@4.0.0
+      with:
+        branch: gh-pages
+        folder: deploy
+        ssh-key: ${{ secrets.DEPLOY_KEY }}
+        git-config-name: github-actions[bot]
+        git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
+        repository-name: minff/mdl-catalog-api
+        single-commit: true

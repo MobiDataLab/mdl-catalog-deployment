@@ -16,7 +16,7 @@ deploy:
     skip-cleanup: true
     local-dir: deploy
     repo: APIs-guru/openapi-directory-api
-    fqdn: minff.github.io/catalog-deployment
+    fqdn: minff.github.io/mdl-catalog
     github-token: $GH_DEPLOY_TOKEN
     keep-history: false
     on:

@@ -59,7 +59,7 @@ info:
     date-created: 2021-04-01T13:14:37+00:00
     document-id: 0dd4683d-c62d-4da6-915a-942de9c3fb4b
   x-logo:
-    url: https://twitter.com/HERE/profile_image?size=original
+    url: https://pbs.twimg.com/profile_images/1414481003696070661/TSAENzSP_400x400.png
   x-olp-service:
     name: positioning
     version: v2
