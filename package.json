@@ -40,6 +40,9 @@
     "deploy": "scripts/deploy.js && scripts/deployRss.js && ./scripts/deploy_badges.js",
     "postinstall": "opencollective postinstall"
   },
+  "overrides": {
+    "drafter.js": "../_EXCLUDED_"
+  },
   "devDependencies": {
     "dredd": "^5.4.6"
   },

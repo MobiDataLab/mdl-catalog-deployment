@@ -40,7 +40,7 @@ jobs:
         cp -r ./openapi-directory/v2/cache ./deploy/v2
     - uses: actions/setup-node@v3
       with:
-        node-version: 12
+        node-version: 16
     - name: Install deps
       run: npm i --no-optional
     - name: Run test
