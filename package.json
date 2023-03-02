@@ -36,7 +36,7 @@
     "url": "git://github.com/MobiDataLab/mdl-catalog-deployment.git"
   },
   "scripts": {
-    "test": "scripts/collection.js validate -q",
+    "test": "scripts/collection.js validate -q APIs/",
     "deploy": "scripts/deploy.js && scripts/deployRss.js && ./scripts/deploy_badges.js",
     "postinstall": "opencollective postinstall"
   },
