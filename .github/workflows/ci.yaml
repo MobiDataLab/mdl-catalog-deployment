@@ -11,49 +11,17 @@ on:
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [main]
-  workflow_dispatch:
 
 jobs:
-  deploy:
-    name: Build and Deploy
-    runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: --max_old_space_size=8192
-    steps:
-    - name: Checkout main repo
-      uses: actions/checkout@v3
-    - name: Checkout api repo
-      uses: actions/checkout@v3
-      with:
-        repository: MobiDataLab/mdl-catalog-api
-        path: mdl-catalog-api
-    - name: Checkout cache repo
-      uses: actions/checkout@v3
-      with:
-        repository: APIs-guru/openapi-directory
-        ref: refs/heads/gh-pages
-        path: openapi-directory
-    - name: Copy apis and cache
-      run: |
-        cp -r ./mdl-catalog-api/* ./
-        mkdir -p ./deploy/v2
-        cp -r ./openapi-directory/v2/cache ./deploy/v2
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-    - name: Install deps
-      run: npm i --no-optional
-    - name: Run test
-      run: npm run test
-    - name: Run deploy
-      run: npm run deploy
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@4.0.0
-      with:
-        branch: gh-pages
-        folder: deploy
-        ssh-key: ${{ secrets.DEPLOY_KEY }}
-        git-config-name: github-actions[bot]
-        git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
-        repository-name: MobiDataLab/mdl-catalog-api
-        single-commit: true
+  deploy-sample:
+    uses: minff/mdl-catalog-deployment/.github/workflows/base_deploy.yaml@mdl
+    with:
+      api-repo: minff/mdl-catalog-api
+    secrets:
+      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+  deploy-mobidatalab:
+    uses: minff/mdl-catalog-deployment/.github/workflows/base_deploy.yaml@mdl
+    with:
+      api-repo: mobidatalab/mdl-catalog-api
+    secrets:
+      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY_MDL }}
