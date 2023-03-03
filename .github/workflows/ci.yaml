@@ -13,15 +13,11 @@ on:
     branches: [main]
 
 jobs:
-  deploy-sample:
-    uses: minff/mdl-catalog-deployment/.github/workflows/base_deploy.yaml@mdl
-    with:
-      api-repo: minff/mdl-catalog-api
-    secrets:
-      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
   deploy-mobidatalab:
-    uses: minff/mdl-catalog-deployment/.github/workflows/base_deploy.yaml@mdl
+    uses: ./.github/workflows/base_deploy.yaml
     with:
       api-repo: mobidatalab/mdl-catalog-api
+      cache-repo: APIs-guru/openapi-directory
     secrets:
-      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY_MDL }}
+      DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+
