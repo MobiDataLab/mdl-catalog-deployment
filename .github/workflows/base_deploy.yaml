@@ -11,6 +11,11 @@ on:
         description: 'External repository for API hosting'
         type: string
         required: false
+      api-repo-ref:
+        description: 'External repository git ref for API source'
+        type: string
+        required: false
+        default: 'refs/heads/main'
       cache-repo:
         description: 'External repository name for published specs as cache, in case specs are oudated'
         type: string
@@ -39,7 +44,7 @@ jobs:
       if: ${{ inputs.api-repo }}
       with:
         repository: ${{ inputs.api-repo }}
-        ref: refs/heads/dev
+        ref: ${{ inputs.api-repo-ref }}
         path: mdl-catalog-api
     - name: Copy APIs
       if: ${{ inputs.api-repo }}
