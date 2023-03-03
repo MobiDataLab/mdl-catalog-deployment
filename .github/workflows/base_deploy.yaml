@@ -1,4 +1,4 @@
-name: ci
+name: Deploy API
 
 # Author: @minff
 # Issue : n/a
@@ -8,51 +8,81 @@ on:
   workflow_call:
     inputs:
       api-repo:
-        description: 'Repository name for api hosting'
+        description: 'External repository for API hosting'
         type: string
-        required: true
+        required: false
+      cache-repo:
+        description: 'External repository name for published specs as cache, in case specs are oudated'
+        type: string
+        required: false
+      cache-repo-ref:
+        description: 'External repository git ref for published specs as cache, in case specs are oudated'
+        type: string
+        required: false
+        default: 'refs/heads/gh-pages'
     secrets:
       DEPLOY_KEY:
-        required: true
+        description: 'Deploy key to push to api-repo'
+        required: false
 
 jobs:
-  build:
+  deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max_old_space_size=8192
     steps:
     - name: Checkout main repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v3
     - name: Checkout api repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+      if: ${{ inputs.api-repo }}
       with:
         repository: ${{ inputs.api-repo }}
         ref: refs/heads/dev
         path: mdl-catalog-api
-    - name: Checkout cache repo
-      uses: actions/checkout@v1
-      with:
-        repository: APIs-guru/openapi-directory
-        ref: refs/heads/gh-pages
-    - name: Copy apis and cache
+    - name: Copy APIs
+      if: ${{ inputs.api-repo }}
       run: |
         cp -r ./mdl-catalog-api/* ./
-        mkdir -p ./deploy/v2
-        cp -r ../openapi-directory/v2/cache ./deploy/v2
-    - uses: actions/setup-node@v1 # setup Node.js
+    - name: Checkout cache repo
+      uses: actions/checkout@v3
+      if: ${{ inputs.cache-repo }}
       with:
-        node-version: '16.x'
+        repository: ${{ inputs.cache-repo }}
+        ref: ${{ inputs.cache-repo-ref }}
+        path: openapi-directory
+    - name: Copy cache
+      if: ${{ inputs.cache-repo }}
+      run: |
+        mkdir -p ./deploy/v2
+        cp -r ./openapi-directory/v2/cache ./deploy/v2
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
     - name: Install deps
-      run: npm i
+      run: npm i --no-optional
     - name: Run test
       run: npm run test
     - name: Run deploy
       run: npm run deploy
-    - name: Deploy 🚀
+    - name: Deploy to external API repo 🚀
+      if: ${{ inputs.api-repo && secrets.DEPLOY_KEY  }}
+      uses: JamesIves/github-pages-deploy-action@4.0.0
+      with:
+        ssh-key: ${{ secrets.DEPLOY_KEY }}
+        repository-name: ${{ inputs.api-repo }}
+        branch: gh-pages
+        folder: deploy
+        git-config-name: github-actions[bot]
+        git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
+        single-commit: true
+    - name: Deploy to main repo 🚀
+      if: ${{ !(inputs.api-repo && secrets.DEPLOY_KEY)  }}
       uses: JamesIves/github-pages-deploy-action@4.0.0
       with:
         branch: gh-pages
         folder: deploy
-        ssh-key: ${{ secrets.DEPLOY_KEY }}
         git-config-name: github-actions[bot]
         git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
-        repository-name: ${{ inputs.api-repo }}
         single-commit: true
