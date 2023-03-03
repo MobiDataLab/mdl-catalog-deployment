@@ -114,8 +114,23 @@ class SpecError extends Error {
 
 //Disable check of SSL certificates
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+var commander = require('commander');
+var program = new commander.Command();
 
-var program = require('commander');
+
+function errorColor(str) {
+  // Add ANSI escape codes to display text in red.
+  return `\x1b[31m${str}\x1b[0m`;
+}
+
+function actionErrorHandler(error) {
+  console.log(error.stack);
+  throw error;
+}
+
+function actionRunner(fn) {
+  return (...args) => Promise.resolve(fn(...args)).catch(actionErrorHandler);
+}
 
 var errExitCode = 255;
 program
@@ -126,19 +141,19 @@ program
 program
   .command('urls')
   .description('show source url for definitions')
-  .action(urlsCollection);
+  .action(actionRunner(urlsCollection));
 
 program
   .command('refresh')
   .description('run refresh - read and write back fixup.yaml files')
   .arguments('[DIR]')
-  .action(refreshCollection);
+  .action(actionRunner(refreshCollection));
 
 program
   .command('fixup')
   .description('update "fixup.yaml" for specified Swagger')
   .arguments('<Swagger>')
-  .action(fixupSwagger);
+  .action(actionRunner(fixupSwagger));
 
 program
   .command('update')
@@ -149,7 +164,7 @@ program
   .option('-r, --resume <PROVIDER>','resume update at a particular provider')
   .option('-s, --slow', 'do not use httpCache etag info')
   .arguments('[DIR]')
-  .action(updateCollection);
+  .action(actionRunner(updateCollection));
 
 program
   .command('validate')
@@ -158,19 +173,19 @@ program
   .option('-f, --fix', 'test fixing in validate')
   .option('-n, --nuke', 'nuke failures')
   .arguments('[DIR]')
-  .action(validateCollection);
+  .action(actionRunner(validateCollection));
 
 program
   .command('check')
   .description('check status of x-preferred flags only')
   .arguments('[DIR]')
-  .action(checkPreferred);
+  .action(actionRunner(checkPreferred));
 
 program
   .command('leads')
   .description('add/remove definitions from 3rd-party catalogs')
   .arguments('[DIR]')
-  .action(updateCatalogLeads);
+  .action(actionRunner(updateCatalogLeads));
 
 program
   .command('add')
@@ -186,7 +201,7 @@ program
   .option('-t, --twitter <NAME>', 'supply x-twitter account, logo not needed')
   .option('-u, --unofficial','set unofficial flag')
   .arguments('<FORMAT> <URL>')
-  .action(addToCollection);
+  .action(actionRunner(addToCollection));
 
 program.parse(process.argv);
 
