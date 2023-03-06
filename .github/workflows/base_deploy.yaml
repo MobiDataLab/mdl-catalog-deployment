@@ -48,6 +48,8 @@ jobs:
     env:
       NODE_OPTIONS: --max_old_space_size=8192
     steps:
+    - name: Checkout main repo
+      uses: actions/checkout@v3
     - name: Checkout deployment repo
       uses: actions/checkout@v3
       if: ${{ inputs.deployment-repo }}
