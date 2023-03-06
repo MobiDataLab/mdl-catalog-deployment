@@ -114,8 +114,7 @@ class SpecError extends Error {
 
 //Disable check of SSL certificates
 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
-var commander = require('commander');
-var program = new commander.Command();
+const program = require('commander');
 
 
 function errorColor(str) {

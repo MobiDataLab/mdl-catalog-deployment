@@ -11,7 +11,7 @@ on:
         description: 'Repository for API hosting'
         type: string
         required: true
-        default: 'mobidatalab/mdl-catalog-api'
+        default: 'MobiDataLab/mdl-catalog-api'
       api-repo-ref:
         description: 'Repository git ref for API source'
         type: string
@@ -30,7 +30,7 @@ on:
         description: 'Repository for deployment script'
         type: string
         required: false
-        default: 'mobidatalab/mdl-catalog-deployment'
+        default: 'MobiDataLab/mdl-catalog-deployment'
       deployment-repo-ref:
         description: 'Repository git ref for deployment script'
         type: string
@@ -92,10 +92,8 @@ jobs:
     - name: Run deploy
       run: npm run deploy
       working-directory: mdl-catalog-deployment
-    - name: Deploy to external API repo 🚀
-      # env: 
-      #   DEPLOY_KEY_PROVIDED: ${{ !!secrets.DEPLOY_KEY }}
-      # if: ${{ inputs.api-repo && env.DEPLOY_KEY_PROVIDED  }}
+    - name: Deploy to API repo 🚀
+      if: ${{ inputs.api-repo }}
       uses: JamesIves/github-pages-deploy-action@4.0.0
       with:
         ssh-key: ${{ secrets.DEPLOY_KEY }}
@@ -105,14 +103,4 @@ jobs:
         git-config-name: github-actions[bot]
         git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
         single-commit: true
-    - name: Deploy to main repo 🚀
-      env: 
-        DEPLOY_KEY_PROVIDED: ${{ !!secrets.DEPLOY_KEY_PROVIDED }}
-      if: ${{ !(inputs.api-repo && env.DEPLOY_KEY_PROVIDED)  }}
-      uses: JamesIves/github-pages-deploy-action@4.0.0
-      with:
-        branch: gh-pages
-        folder: mdl-catalog-deployment/deploy
-        git-config-name: github-actions[bot]
-        git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
-        single-commit: true
+
