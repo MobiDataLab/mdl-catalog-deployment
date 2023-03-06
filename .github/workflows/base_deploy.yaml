@@ -8,11 +8,12 @@ on:
   workflow_call:
     inputs:
       api-repo:
-        description: 'External repository for API hosting'
+        description: 'Repository for API hosting'
         type: string
-        required: false
+        required: true
+        default: 'mobidatalab/mdl-catalog-api'
       api-repo-ref:
-        description: 'External repository git ref for API source'
+        description: 'Repository git ref for API source'
         type: string
         required: false
         default: 'refs/heads/main'
@@ -25,6 +26,16 @@ on:
         type: string
         required: false
         default: 'refs/heads/gh-pages'
+      deployment-repo:
+        description: 'Repository for deployment script'
+        type: string
+        required: false
+        default: 'mobidatalab/mdl-catalog-deployment'
+      deployment-repo-ref:
+        description: 'Repository git ref for deployment script'
+        type: string
+        required: false
+        default: 'refs/heads/main'
     secrets:
       DEPLOY_KEY:
         description: 'Deploy key to push to api-repo'
@@ -37,8 +48,13 @@ jobs:
     env:
       NODE_OPTIONS: --max_old_space_size=8192
     steps:
-    - name: Checkout main repo
+    - name: Checkout deployment repo
       uses: actions/checkout@v3
+      if: ${{ inputs.deployment-repo }}
+      with:
+        repository: ${{ inputs.deployment-repo }}
+        ref: ${{ inputs.deployment-repo-ref }}
+        path: mdl-catalog-deployment
     - name: Checkout api repo
       uses: actions/checkout@v3
       if: ${{ inputs.api-repo }}
@@ -49,7 +65,7 @@ jobs:
     - name: Copy APIs
       if: ${{ inputs.api-repo }}
       run: |
-        cp -r ./mdl-catalog-api/* ./
+        cp -r ./mdl-catalog-api/* ./mdl-catalog-deployment/
     - name: Checkout cache repo
       uses: actions/checkout@v3
       if: ${{ inputs.cache-repo }}
@@ -60,11 +76,12 @@ jobs:
     - name: Copy cache
       if: ${{ inputs.cache-repo }}
       run: |
-        mkdir -p ./deploy/v2
-        cp -r ./openapi-directory/v2/cache ./deploy/v2
+        mkdir -p ./mdl-catalog-deployment/deploy/v2
+        cp -r ./openapi-directory/v2/cache ./mdl-catalog-deployment/deploy/v2
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+    - run: cd ./mdl-catalog-deployment/
     - name: Install deps
       run: npm i --no-optional
     - name: Run test
@@ -72,15 +89,15 @@ jobs:
     - name: Run deploy
       run: npm run deploy
     - name: Deploy to external API repo 🚀
-      env: 
-        DEPLOY_KEY_PROVIDED: ${{ !!secrets.DEPLOY_KEY }}
-      if: ${{ inputs.api-repo && env.DEPLOY_KEY_PROVIDED  }}
+      # env: 
+      #   DEPLOY_KEY_PROVIDED: ${{ !!secrets.DEPLOY_KEY }}
+      # if: ${{ inputs.api-repo && env.DEPLOY_KEY_PROVIDED  }}
       uses: JamesIves/github-pages-deploy-action@4.0.0
       with:
         ssh-key: ${{ secrets.DEPLOY_KEY }}
         repository-name: ${{ inputs.api-repo }}
         branch: gh-pages
-        folder: deploy
+        folder: mdl-catalog-deployment/deploy
         git-config-name: github-actions[bot]
         git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
         single-commit: true
@@ -91,7 +108,7 @@ jobs:
       uses: JamesIves/github-pages-deploy-action@4.0.0
       with:
         branch: gh-pages
-        folder: deploy
+        folder: mdl-catalog-deployment/deploy
         git-config-name: github-actions[bot]
         git-config-email: 41898282+github-actions[bot]@users.noreply.github.com
         single-commit: true
