@@ -1,0 +1,68 @@
+name: Base Issue Watcher
+
+# Author: @minff
+# Issue : n/a
+# Desc  : Base issue workflow
+
+on:
+  workflow_call:
+    inputs:
+      deployment-repo:
+        description: 'Repository for deployment script'
+        type: string
+        required: false
+        default: 'MobiDataLab/mdl-catalog-deployment'
+      deployment-repo-ref:
+        description: 'Repository git ref for deployment script'
+        type: string
+        required: false
+        default: 'refs/heads/main'
+
+jobs:
+  show_issue_event:
+    name: Show event
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_CONTEXT: ${{ toJson(github) }}
+    steps:
+      - name: show github
+        run: |
+          echo event action: ${{ toJson(github.event.action) }}
+  add_api:
+    name: Add API
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: --max_old_space_size=8192
+      GITHUB_CONTEXT: ${{ toJson(github) }}
+    steps:
+    - name: Checkout main repo
+      uses: actions/checkout@v3
+    - name: Checkout deployment repo
+      uses: actions/checkout@v3
+      if: ${{ inputs.deployment-repo }}
+      with:
+        repository: ${{ inputs.deployment-repo }}
+        ref: ${{ inputs.deployment-repo-ref }}
+        path: mdl-catalog-deployment
+    - name: Install scripts
+      run: npm i --no-optional
+      working-directory: mdl-catalog-deployment
+    - name: Add API from issue
+      run: node $GITHUB_WORKSPACE/mdl-catalog-deployment/scripts/handleGithub.js issue
+      working-directory: APIs
+    - name: List API
+      working-directory: APIs
+      run: find .
+    - name: Prepare commit ignores
+      run: echo 'patch.yaml' >> .gitignore
+    - name: Commit and Create Pull Request
+      id: cpr
+      uses: peter-evans/create-pull-request@v4
+      with:
+        title: ${{ github.event.issue.title }}
+        body: 'Close #${{ github.event.issue.number }}'
+        commit-message: '${{ github.event.issue.title }}'
+        branch: add-api/issue-${{ github.event.issue.number }}
+        branch-suffix: timestamp
+        delete-branch: true
+        add-paths: APIs
