@@ -138,7 +138,16 @@ function buildVersionEntry(swagger, filename) {
   util.saveJson(deployDir(`${basename}.json`), swagger, true);
   util.saveYaml(deployDir(`${basename}.yaml`), swagger, true);
 
-  var dates = util.exec(`git log --format=%aD --follow -- '${filename}'`);
+  var dir = process.env.API_PATH;
+  var dates = ""
+  if (dir) {
+    dates = util.exec("cd " + dir + " && " + `git log --format=%aD --follow -- "${filename}"`);
+  }
+
+  if (!dates) {
+    dates = util.exec(`git log --format=%aD --follow -- "${filename}"`);
+  }
+
   dates = _(dates).split('\n').compact();
 
   return {
