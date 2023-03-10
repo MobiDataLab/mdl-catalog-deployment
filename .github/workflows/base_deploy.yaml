@@ -1,8 +1,8 @@
-name: Reusable Deploy API
+name: Reusable Build and Deploy API
 
 # Author: @minff
 # Issue : n/a
-# Desc  : Reusable deploy workflow
+# Desc  : Reusable build and deploy workflow
 
 on:
   workflow_call:
@@ -36,27 +36,29 @@ on:
         type: string
         required: false
         default: 'refs/heads/main'
+      deploy-gh-pages:
+        description: 'Set the flag to true to deploy to gh-pages'
+        type: boolean
+        required: false
+        default: false
     secrets:
       DEPLOY_KEY:
         description: 'Deploy key to push to api-repo'
         required: false
 
+env:
+  NODE_OPTIONS: --max_old_space_size=8192
+  API_PATH: ${{ github.workspace }}/mdl-catalog-api
+
 jobs:
-  deploy:
-    name: Build and Deploy
+  build:
+    name: Bulld
     runs-on: ubuntu-latest
-    env:
-      NODE_OPTIONS: --max_old_space_size=8192
-      API_PATH: ${{ github.workspace }}/mdl-catalog-api
-    concurrency:
-      group: deploy-gh-pages
-      cancel-in-progress: true
     steps:
     - name: Checkout main repo
       uses: actions/checkout@v3
     - name: Checkout deployment repo
       uses: actions/checkout@v3
-      if: ${{ inputs.deployment-repo }}
       with:
         repository: ${{ inputs.deployment-repo }}
         ref: ${{ inputs.deployment-repo-ref }}
@@ -93,11 +95,33 @@ jobs:
     - name: Run test
       run: npm run test
       working-directory: mdl-catalog-deployment
-    - name: Run deploy
+    - name: Build deploy artifacts
       run: npm run deploy
       working-directory: mdl-catalog-deployment
+    - name: Archive deploy artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: deploy-artifacts
+        path: mdl-catalog-deployment/deploy
+        retention-days: 2
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ inputs.api-repo && inputs.deploy-gh-pages }}
+    concurrency:
+      group: deploy-gh-pages
+      cancel-in-progress: true
+    steps:
+    - name: Download deploy artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: deploy-artifacts
+        path: mdl-catalog-deployment/deploy
+    - run: |
+        ls -la
+        ls -la mdl-catalog-deployment/deploy
     - name: Deploy to API repo 🚀
-      if: ${{ inputs.api-repo }}
       uses: JamesIves/github-pages-deploy-action@4.0.0
       with:
         ssh-key: ${{ secrets.DEPLOY_KEY }}

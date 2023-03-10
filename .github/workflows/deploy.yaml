@@ -16,6 +16,7 @@ jobs:
     with:
       api-repo: MobiDataLab/mdl-catalog-api
       cache-repo: APIs-guru/openapi-directory
+      deploy-gh-pages: true
     secrets:
       DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
 
