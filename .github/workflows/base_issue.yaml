@@ -1,8 +1,8 @@
-name: Base Issue Watcher
+name: Reusable Issue Watcher
 
 # Author: @minff
 # Issue : n/a
-# Desc  : Base issue workflow
+# Desc  : Reusable issue workflow
 
 on:
   workflow_call:
