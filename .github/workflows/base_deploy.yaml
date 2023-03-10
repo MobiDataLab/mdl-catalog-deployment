@@ -48,6 +48,9 @@ jobs:
     env:
       NODE_OPTIONS: --max_old_space_size=8192
       API_PATH: ${{ github.workspace }}/mdl-catalog-api
+    concurrency:
+      group: deploy-gh-pages
+      cancel-in-progress: true
     steps:
     - name: Checkout main repo
       uses: actions/checkout@v3
