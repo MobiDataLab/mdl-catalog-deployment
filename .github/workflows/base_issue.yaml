@@ -22,6 +22,7 @@ jobs:
   show_issue_event:
     name: Show event
     runs-on: ubuntu-latest
+    if: ${{ vars.DEBUG == 'true' }}
     env:
       GITHUB_CONTEXT: ${{ toJson(github) }}
     steps:
