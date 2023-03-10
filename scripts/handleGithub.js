@@ -16,7 +16,6 @@ function actionRunner(fn) {
 }
 
 var githubContext = JSON.parse(process.env.GITHUB_CONTEXT || "{}"), // GITHUB_CONTEXT: ${{ github }}
-  config = {},
   issueBodyConfig = {},
   eventAction = githubContext.event ? githubContext.event.action : "",
   eventIssue = githubContext.event ? githubContext.event.issue : {};
@@ -41,7 +40,8 @@ program
 program.parse(process.argv);
 
 
-function addApiFromIssue() {
+function configFromIssue() {
+  let config = {};
   if (!!eventIssue.body) {
     issueBodyConfig = Object.fromEntries(
       eventIssue.body
@@ -68,14 +68,14 @@ function addApiFromIssue() {
     console.warn("Issue has no body");
   }
 
+  config.format =
+    formatMapping[issueBodyConfig.format] || formatMapping.default;
   config.category = issueBodyConfig.category || "";
-  config.url = issueBodyConfig.url || "";
   config.logo = issueBodyConfig.logo || "";
+  config.url = issueBodyConfig.url || "";
   config.slug = (issueBodyConfig.slug || issueBodyConfig.name || "")
     .toLowerCase()
     .replaceAll(" ", "-");
-  config.format =
-    formatMapping[issueBodyConfig.format] || formatMapping.default;
 
   try {
     config.host = new URL(issueBodyConfig.url).host
@@ -86,7 +86,11 @@ function addApiFromIssue() {
     console.error("%s: %s", error.message, issueBodyConfig.url);
     process.exit(1);
   }
+  return config;
+}
 
+
+function addApiFromConfig(config) {
   var commandArgs = []
     .concat(config.category ? ["-c", config.category] : [])
     .concat(config.host ? ["-h", config.host] : [])
@@ -120,3 +124,9 @@ function addApiFromIssue() {
     process.stderr.write(data);
   });
 }
+
+function addApiFromIssue() {
+  let config = configFromIssue();
+  addApiFromConfig(config);
+}
+
