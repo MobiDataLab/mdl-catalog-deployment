@@ -50,9 +50,13 @@ env:
   NODE_OPTIONS: --max_old_space_size=8192
   API_PATH: ${{ github.workspace }}/mdl-catalog-api
 
+concurrency:
+  group: ${{ inputs.deploy-gh-pages && 'deploy-gh-pages' || format('build-{0}', github.ref) }}
+  cancel-in-progress: true
+
 jobs:
-  build:
-    name: Bulld
+  build-deploy:
+    name: ${{ inputs.deploy-gh-pages && 'Bulld and Deploy' || 'Build' }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout main repo
@@ -98,31 +102,9 @@ jobs:
     - name: Build deploy artifacts
       run: npm run deploy
       working-directory: mdl-catalog-deployment
-    - name: Archive deploy artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: deploy-artifacts
-        path: mdl-catalog-deployment/deploy
-        retention-days: 2
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    needs: build
-    if: ${{ inputs.api-repo && inputs.deploy-gh-pages }}
-    concurrency:
-      group: deploy-gh-pages
-      cancel-in-progress: true
-    steps:
-    - name: Download deploy artifacts
-      uses: actions/download-artifact@v3
-      with:
-        name: deploy-artifacts
-        path: mdl-catalog-deployment/deploy
-    - run: |
-        ls -la
-        ls -la mdl-catalog-deployment/deploy
     - name: Deploy to API repo 🚀
       uses: JamesIves/github-pages-deploy-action@4.0.0
+      if: ${{ inputs.api-repo && inputs.deploy-gh-pages }}
       with:
         ssh-key: ${{ secrets.DEPLOY_KEY }}
         repository-name: ${{ inputs.api-repo }}
