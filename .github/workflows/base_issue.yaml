@@ -63,6 +63,5 @@ jobs:
         body: 'Close #${{ github.event.issue.number }}'
         commit-message: '${{ github.event.issue.title }}'
         branch: add-api/issue-${{ github.event.issue.number }}
-        branch-suffix: timestamp
         delete-branch: true
         add-paths: APIs
