@@ -96,8 +96,8 @@ jobs:
     - name: Install deps
       run: npm i --no-optional
       working-directory: mdl-catalog-deployment
-    - name: Run test
-      run: npm run test
+    - name: Validate API specs
+      run: npm run test ./APIs/
       working-directory: mdl-catalog-deployment
     - name: Build deploy artifacts
       run: npm run deploy
