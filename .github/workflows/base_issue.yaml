@@ -49,7 +49,7 @@ jobs:
       run: npm i --no-optional
       working-directory: mdl-catalog-deployment
     - name: Add API from issue
-      run: node $GITHUB_WORKSPACE/mdl-catalog-deployment/scripts/handleGithub.js issue
+      run: node $GITHUB_WORKSPACE/mdl-catalog-deployment/scripts/handleGithub.js batchIssue
       working-directory: APIs
     - name: List API
       working-directory: APIs

@@ -25,26 +25,38 @@ const formatMapping = {
   default: "openapi_3",
 };
 
-
-
 process.on("exit", function () {
   console.log("Exiting with " + (process.exitCode || 0));
 });
-
 
 program
   .command("issue")
   .description("add api from issue")
   .action(actionRunner(addApiFromIssue));
 
+program
+  .command("batchIssue")
+  .description("add api in batch from issue")
+  .action(actionRunner(addBatchApiFromIssue));
+
 program.parse(process.argv);
 
+function getIssueBody() {
+  return eventIssue.body;
+}
 
-function configFromIssue() {
+function getBatchIssueBody() {
+  return eventIssue.body
+    .split(/\#+.*/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function configFromIssue(body) {
   let config = {};
-  if (!!eventIssue.body) {
+  if (!!body) {
     issueBodyConfig = Object.fromEntries(
-      eventIssue.body
+      body
         .replaceAll("*", "")
         .split("\n")
         .filter(Boolean)
@@ -61,6 +73,7 @@ function configFromIssue() {
             value,
           ];
         })
+        .filter(([key, value]) => key)
     );
     console.debug("Parsing issue: ");
     console.debug(issueBodyConfig);
@@ -88,7 +101,6 @@ function configFromIssue() {
   }
   return config;
 }
-
 
 function addApiFromConfig(config) {
   var commandArgs = []
@@ -126,7 +138,15 @@ function addApiFromConfig(config) {
 }
 
 function addApiFromIssue() {
-  let config = configFromIssue();
-  addApiFromConfig(config);
+  return Promise.resolve(getIssueBody())
+    .then(configFromIssue)
+    .then(addApiFromConfig);
 }
 
+function addBatchApiFromIssue() {
+  return Promise.allSettled(
+    getBatchIssueBody().map((body) =>
+      Promise.resolve(body).then(configFromIssue).then(addApiFromConfig)
+    )
+  );
+}
