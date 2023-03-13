@@ -171,10 +171,10 @@ exports.getOriginUrl = function (swagger) {
   return _.last(exports.getOrigin(swagger)).url;
 }
 
-exports.saveSwagger = function (swagger, quiet) {
+exports.saveSwagger = function (swagger, quiet, swaggerFile) {
   let filename = 'swagger.yaml';
   if (swagger.openapi) filename = 'openapi.yaml';
-  var path = exports.getSwaggerPath(swagger,filename);
+  var path = swaggerFile || exports.getSwaggerPath(swagger,filename);
   exports.saveYaml(path, swagger, quiet);
   return path;
 }

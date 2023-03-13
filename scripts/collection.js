@@ -347,12 +347,15 @@ async function validateCollection(dir, command) {
 function validatePreferred(specs) {
   Error.stackTraceLimit = 1;
   var preferred = {};
-  _.each(specs, function (swagger) {
+  var preferredSpecs = {};
+  _.each(specs, function (swagger, swaggerFile) {
     var id = util.getApiId(swagger);
     var version = swagger.info.version;
     var spath = util.getSwaggerPath(swagger,swagger.openapi ? 'openapi.yaml' : 'swagger.yaml');
     preferred[id] = preferred[id] || {};
     preferred[id][swagger.info.version] = swagger.info['x-preferred'];
+    preferredSpecs[id] = preferredSpecs[id] || {};
+    preferredSpecs[id][version] = swaggerFile;
     if (Object.keys(swagger.paths).length<1)
       warnings.push(`"${spath}" has no paths`);
   });
@@ -364,12 +367,11 @@ function validatePreferred(specs) {
       //assert(_.isUndefined(versions[0]) || versions[0] === true,
       //  'Preferred not true in "' + id + '"');
       if (versions[0] === false) {
-        let swagger = specs[id.replace(':','/')+'/'+oversion+'/swagger.yaml'];
-        if (!swagger)
-          swagger = specs[id.replace(':','/')+'/'+oversion+'/openapi.yaml'];
+        let swaggerFile = preferredSpecs[id][oversion];
+        let swagger = specs[swaggerFile];
         if (swagger) {
           swagger.info["x-preferred"] = true;
-          util.saveSwagger(swagger);
+          util.saveSwagger(swagger, null, swaggerFile);
         }
         else console.warn('In validatePreferred (1). Not found',id,oversion);
       }
@@ -379,16 +381,17 @@ function validatePreferred(specs) {
     var seenTrue = false;
     var maxVersion = '';
     var latest = undefined;
+    var latestFile = "";
+
     _.each(versions, function (value, version) {
       //assert(!_.isUndefined(value), `Missing value for "x-preferred" in "${id}" "${version}"`);
-      let swagger = specs[id.replace(':','/')+'/'+version+'/swagger.yaml'];
-      if (!swagger)
-        swagger = specs[id.replace(':','/')+'/'+version+'/openapi.yaml'];
+      let swaggerFile = preferredSpecs[id][version];
+      let swagger = specs[swaggerFile];
       if (_.isUndefined(value)) {
         value = false;
         if (swagger) {
           swagger.info["x-preferred"] = value;
-          util.saveSwagger(swagger);
+          util.saveSwagger(swagger, null, swaggerFile);
         }
         else {
           console.warn('In validatePreferred (2). Not found',id,version);
@@ -405,13 +408,14 @@ function validatePreferred(specs) {
       if ((version > maxVersion) && (version.indexOf('alpha')<0) && (version.indexOf('beta')<0)) {
         maxVersion = version;
         latest = swagger;
+        latestFile = swaggerFile;
       }
     });
     if (!seenTrue) {
       if (maxVersion && latest) {
         console.warn('Forcing preferred true in',id,maxVersion);
         latest.info["x-preferred"] = true;
-        util.saveSwagger(latest);
+        util.saveSwagger(latest, null, latestFile);
         seenTrue = true;
       }
     }
