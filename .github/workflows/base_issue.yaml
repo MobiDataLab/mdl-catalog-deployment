@@ -17,6 +17,9 @@ on:
         type: string
         required: false
         default: 'refs/heads/main'
+    secrets:
+      DEPLOY_KEY:
+        required: false
 
 jobs:
   show_issue_event:
@@ -38,6 +41,8 @@ jobs:
     steps:
     - name: Checkout main repo
       uses: actions/checkout@v3
+      with:
+        ssh-key: ${{ secrets.DEPLOY_KEY }}
     - name: Checkout deployment repo
       uses: actions/checkout@v3
       if: ${{ inputs.deployment-repo }}
