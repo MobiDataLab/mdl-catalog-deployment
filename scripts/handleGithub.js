@@ -107,7 +107,8 @@ function addApiFromConfig(config) {
     .concat(config.category ? ["-c", config.category] : [])
     .concat(config.host ? ["-h", config.host] : [])
     .concat(config.slug ? ["-s", config.slug] : [])
-    .concat(config.logo ? ["-l", config.logo] : []);
+    .concat(config.logo ? ["-l", config.logo] : [])
+    .concat("--ignore");
 
   var command = [
     "node",
