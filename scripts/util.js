@@ -159,7 +159,9 @@ exports.getPathComponents = function (swagger, stripVersion) {
 }
 
 exports.getSwaggerPath = function (swagger, filename) {
-  filename = filename || 'swagger.yaml';
+  let defaulFilename = 'swagger.yaml';
+  if (swagger.openapi) defaulFilename = 'openapi.yaml';
+  filename = filename || defaulFilename;
   return exports.getPathComponents(swagger).join('/') + '/' + filename;
 }
 
@@ -172,9 +174,7 @@ exports.getOriginUrl = function (swagger) {
 }
 
 exports.saveSwagger = function (swagger, quiet, swaggerFile) {
-  let filename = 'swagger.yaml';
-  if (swagger.openapi) filename = 'openapi.yaml';
-  var path = swaggerFile || exports.getSwaggerPath(swagger,filename);
+  var path = swaggerFile || exports.getSwaggerPath(swagger);
   exports.saveYaml(path, swagger, quiet);
   return path;
 }
