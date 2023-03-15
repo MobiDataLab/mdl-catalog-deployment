@@ -567,9 +567,8 @@ function writeSpec(source, format, exPatch, command) {
       if (resolverContext.called && !resolverContext.anyDiff)
         throw Error('Warning: 304 Not modified');
       var fixup = util.readYaml(getOriginFixupPath(spec));
-      jsondiffpatch.patch(spec, fixup);
-
-      return convertToSwagger(spec,exPatch,command);
+      return convertToSwagger(spec,exPatch,command)
+        .then(swagger => jsondiffpatch.patch(swagger, fixup));
     })
     .then(swagger => {
       context.swagger = swagger;
