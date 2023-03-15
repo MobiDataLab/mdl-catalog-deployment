@@ -58,7 +58,15 @@ jobs:
       working-directory: APIs
     - name: List API
       working-directory: APIs
-      run: find .
+      run: |
+        find .
+        if [[ -z $(git status --porcelain .) ]] ; then
+          echo "No file changed. Exiting.."
+          exit 1
+        else
+          echo "Files changed:"
+          git status --porcelain .
+        fi
     - name: Prepare commit ignores
       run: echo 'patch.yaml' >> .gitignore
     - name: Commit and Create Pull Request
