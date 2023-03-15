@@ -21,6 +21,8 @@ on:
       DEPLOY_KEY:
         required: false
 
+permissions: read-all
+
 jobs:
   show_issue_event:
     name: Show event
