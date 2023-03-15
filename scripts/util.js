@@ -16,6 +16,7 @@ var mkdirp = require('mkdirp').sync;
 var sanitize = require('sanitize-filename');
 var sortobject = require('deep-sort-object');
 var mktemp = require('mktemp').createFileSync;
+var Promise = require('bluebird');
 
 exports.readYaml = function (filename) {
   if (!fs.existsSync(filename))
