@@ -88,3 +88,10 @@ jobs:
         branch: add-api/issue-${{ github.event.issue.number }}
         delete-branch: true
         add-paths: APIs
+    - name: Enable PR auto merge
+      continue-on-error: true
+      uses: peter-evans/enable-pull-request-automerge@v2
+      with:
+        token: ${{ steps.generate-token.outputs.token }}
+        pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+        merge-method: rebase
