@@ -22,6 +22,8 @@ var githubContext = JSON.parse(process.env.GITHUB_CONTEXT || "{}"), // GITHUB_CO
 
 const formatMapping = {
   "OpenAPI 3.0": "openapi_3",
+  "OpenAPI 2.0": "swagger_2",
+  "OpenAPI 2.0 (fka Swagger)": "swagger_2",
   default: "openapi_3",
 };
 
