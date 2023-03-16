@@ -18,10 +18,12 @@ on:
         required: false
         default: 'refs/heads/main'
     secrets:
-      DEPLOY_KEY:
+      APP_ID:
+        description: 'App Id'
         required: false
-
-permissions: read-all
+      APP_PRIVATE_KEY:
+        description: 'App Private Key'
+        required: false
 
 jobs:
   show_issue_event:
@@ -43,8 +45,6 @@ jobs:
     steps:
     - name: Checkout main repo
       uses: actions/checkout@v3
-      with:
-        ssh-key: ${{ secrets.DEPLOY_KEY }}
     - name: Checkout deployment repo
       uses: actions/checkout@v3
       if: ${{ inputs.deployment-repo }}
@@ -71,10 +71,17 @@ jobs:
         fi
     - name: Prepare commit ignores
       run: echo 'patch.yaml' >> .gitignore
+    - name: Prepare app token
+      uses: tibdex/github-app-token@v1
+      id: generate-token
+      with:
+        app_id: ${{ secrets.APP_ID }}
+        private_key: ${{ secrets.APP_PRIVATE_KEY }}
     - name: Commit and Create Pull Request
       id: cpr
       uses: peter-evans/create-pull-request@v4
       with:
+        token: ${{ steps.generate-token.outputs.token }}
         title: ${{ github.event.issue.title }}
         body: 'Close #${{ github.event.issue.number }}'
         commit-message: '${{ github.event.issue.title }}'
