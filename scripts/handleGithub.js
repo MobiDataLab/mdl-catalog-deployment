@@ -81,15 +81,6 @@ function configFromIssue(body) {
     console.warn("Issue has no body");
   }
 
-  config.format =
-    formatMapping[issueBodyConfig.format] || formatMapping.default;
-  config.category = issueBodyConfig.category || "";
-  config.logo = issueBodyConfig.logo || "";
-  config.url = issueBodyConfig.url || "";
-  config.slug = (issueBodyConfig.slug || issueBodyConfig.name || "")
-    .toLowerCase()
-    .replaceAll(" ", "-");
-
   try {
     config.host = new URL(issueBodyConfig.url).host
       .split(".")
@@ -99,6 +90,18 @@ function configFromIssue(body) {
     console.error("%s: %s", error.message, issueBodyConfig.url);
     process.exit(1);
   }
+  // omit service name if api name is in api host
+  let serviceName = config.host.toLowerCase().indexOf(issueBodyConfig.name.toLowerCase()) < 0 ? issueBodyConfig.name : "" ;
+
+  config.format =
+    formatMapping[issueBodyConfig.format] || formatMapping.default;
+  config.category = issueBodyConfig.category || "";
+  config.logo = issueBodyConfig.logo || "";
+  config.url = issueBodyConfig.url || "";
+  config.slug = (issueBodyConfig.slug || serviceName)
+    .toLowerCase()
+    .replaceAll(" ", "-");
+
   return config;
 }
 
