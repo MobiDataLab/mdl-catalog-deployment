@@ -101,6 +101,15 @@ jobs:
           branch: add-api/issue-${{ github.event.issue.number }}
           delete-branch: true
           add-paths: APIs
+      - name: Check PR outputs
+        run: |
+          num=${{ steps.cpr.outputs.pull-request-number }}
+          if [[ -z "$num" ]] || [[ "$num" == "0" ]]; then
+            echo PR not not created or updated
+            exit 1
+          else
+            echo "PR #$num steps.cpr.outputs.pull-request-operation - ${{ steps.cpr.outputs.pull-request-url }})"
+          fi
       - name: Enable PR auto merge
         continue-on-error: true
         uses: peter-evans/enable-pull-request-automerge@v2
