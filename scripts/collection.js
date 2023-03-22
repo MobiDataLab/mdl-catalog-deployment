@@ -1153,8 +1153,11 @@ function patchSwagger(swagger, exPatch) {
     delete swagger.info.logo;
 
   if (swagger.info['x-logo'] && swagger.info['x-logo'].url) {
-    if (!swagger.info['x-logo'].url.startsWith('http')) {
+    if (!swagger.info['x-logo'].url.startsWith('http') && !exPatch.info['x-logo']) {
       swagger.info['x-logo'].url = url.resolve(util.getOriginUrl(swagger),swagger.info['x-logo'].url);
+    }
+    else {
+      delete swagger.info['x-logo'].url
     }
   }
 
