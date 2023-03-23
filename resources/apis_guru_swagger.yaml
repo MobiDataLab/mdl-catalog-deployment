@@ -1,22 +1,20 @@
 swagger: "2.0"
 info:
   version: "2.0.2"
-  title: "APIs.guru"
+  title: "MobiDataLab Service Catalog"
   description: |
-    Wikipedia for Web APIs. Repository of API specs in OpenAPI 3.0 format.
+    MobiDataLab Service Catalog is built on top of APIs.guru - Wikipedia for Web APIs. Repository of API specs in OpenAPI 3.0 format.
 
-    **Warning**: If you want to be notified about changes in advance please join our [Slack channel](https://join.slack.com/t/mermade/shared_invite/zt-g78g7xir-MLE_CTCcXCdfJfG3CJe9qA).
-
-    Client sample: [[Demo]](https://mobidatalab.github.io/mdl-catalog-api/simple-ui) [[Repo]](https://github.com/APIs-guru/simple-ui)
+    Client sample: [[Demo]](https://mobidatalab.github.io/mdl-catalog-ui/simple-ui) [[Repo]](https://github.com/MobiDataLab/mdl-catalog-ui)
   contact:
-    name: "APIs.guru"
-    url: https://minff.github.io
-    email: "huyminh.nguyen@here.com"
+    name: "MobiDataLab"
+    url: https://mobidatalab.eu/
+    email: ""
   license:
     name: "CC0 1.0"
-    url: "https://github.com/APIs-guru/openapi-directory#licenses"
+    url: "https://github.com/MobiDataLab/mdl-catalog-api#licenses"
   x-logo:
-    url: https://mobidatalab.github.io/mdl-catalog-api/branding/logo_vertical.svg
+    url: https://mobidatalab.eu/wp-content/uploads/2021/06/logo.svg
 externalDocs:
   url: https://github.com/APIs-guru/openapi-directory/blob/master/API.md
 produces:
