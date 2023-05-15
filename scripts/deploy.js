@@ -82,7 +82,7 @@ function cacheLogo(url) {
     .spread(function(response, data) {
 
       if (!URI(url).suffix()) {
-        var mime = response.headers['content-type'];
+        var mime = decodeURIComponent(response.headers['content-type']);
         assert(mime.match('image/'));
         var extension = MIME.extension(mime);
         assert(extension);
