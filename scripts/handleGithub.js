@@ -93,7 +93,12 @@ function configFromIssue(body) {
     process.exit(1);
   }
   // omit service name if api name is in api host
-  let serviceName = config.host.toLowerCase().indexOf(issueBodyConfig.name.toLowerCase()) < 0 ? issueBodyConfig.name : "" ;
+  let serviceName = issueBodyConfig.name
+    .toLowerCase()
+    .split(" ")
+    .every((word) => config.host.toLowerCase().indexOf(word) < 0)
+    ? issueBodyConfig.name
+    : "";
 
   config.format =
     formatMapping[issueBodyConfig.format] || formatMapping.default;
