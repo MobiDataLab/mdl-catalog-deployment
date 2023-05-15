@@ -11,7 +11,7 @@
                 "open_data"
             ],
             "x-logo": {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "#d6012e",
                 "url": "https://dati.comune.milano.it/base/images/logo_milano.png"
             },
             "x-origin": [
@@ -57,7 +57,7 @@
                 "open_data"
             ],
             "x-logo": {
-                "backgroundColor": "#FFFFFF",
+                "backgroundColor": "#005d7a",
                 "url": "http://dati.mit.gov.it/catalog/uploads/admin/2022-12-19-103459.915797logomit20221219.png"
             },
             "x-origin": [
