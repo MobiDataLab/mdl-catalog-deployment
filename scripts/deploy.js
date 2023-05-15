@@ -47,6 +47,10 @@ util.saveYaml(deployDir('swagger.yaml'), apisGuruSwagger);
 
 var specs = util.getSpecs('APIs/');
 buildApiList(specs)
+.then(function (apiList){
+  var otherApis = buildOtherEntries("resources/listOther.json");
+  return Object.assign(apiList, otherApis);
+})
 .then(function (apiList) {
   console.log('Generated list for ' + _.size(apiList) + ' API specs.');
   util.saveJson(deployDir('list.json'), apiList);
@@ -158,4 +162,24 @@ function buildVersionEntry(swagger, filename) {
     added: new Date(dates.last()),
     updated: new Date(dates.first())
   };
+}
+
+function buildOtherEntries(filename) {
+
+  var otherApis = util.readJson(filename);
+  var dates = util.exec(`git log --format=%aD --follow -- "${filename}"`);
+  dates = _(dates).split("\n").compact();
+  var result = {};
+  Object.keys(otherApis)
+    .map((k) => {
+      result[k] = {
+        preferred: otherApis[k].info.version,
+        versions: {
+          [otherApis[k].info.version] : otherApis[k]
+        },
+        added: new Date(dates.last()),
+        updated: new Date(dates.first()),
+      }
+    });
+  return result;
 }

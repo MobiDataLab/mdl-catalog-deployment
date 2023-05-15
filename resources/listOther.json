@@ -1,0 +1,94 @@
+{
+    "italy:milan:dati.comune.milano.it": {
+        "info": {
+            "contact": {
+                "url": "https://dati.comune.milano.it/callgroup/32bbfe8c-ca16-4ec3-bd6f-c12380ca3a11"
+            },
+            "description": "",
+            "title": "dati.comune.milano.it",
+            "version": "1",
+            "x-apisguru-categories": [
+                "open_data"
+            ],
+            "x-logo": {
+                "backgroundColor": "#FFFFFF",
+                "url": "https://dati.comune.milano.it/base/images/logo_milano.png"
+            },
+            "x-origin": [
+                {
+                    "format": "unknown",
+                    "url": "https://dati.comune.milano.it/callgroup/32bbfe8c-ca16-4ec3-bd6f-c12380ca3a11"
+                }
+            ]
+        }
+    },
+    "italy:milan:amat-mi.it": {
+        "info": {
+            "contact": {
+                "url": "https://www.amat-mi.it/it/servizi/pubblicazione-orari-trasporto-pubblico-locale-formato-gtfs/"
+            },
+            "description": "",
+            "title": "www.amat-mi.it",
+            "version": "1",
+            "x-apisguru-categories": [
+                "open_data"
+            ],
+            "x-logo": {
+                "backgroundColor": "#FFFFFF",
+                "url": "https://www.amat-mi.it/moduli/output_immagine.php?id=75"
+            },
+            "x-origin": [
+                {
+                    "format": "unknown",
+                    "url": "https://www.amat-mi.it/it/servizi/pubblicazione-orari-trasporto-pubblico-locale-formato-gtfs/"
+                }
+            ]
+        }
+    },
+    "italy:milan:dati.mit.gov.it": {
+        "info": {
+            "contact": {
+                "url": "https://dati.mit.gov.it/catalog/dataset/"
+            },
+            "description": "",
+            "title": "dati.mit.gov.it",
+            "version": "1",
+            "x-apisguru-categories": [
+                "open_data"
+            ],
+            "x-logo": {
+                "backgroundColor": "#FFFFFF",
+                "url": "http://dati.mit.gov.it/catalog/uploads/admin/2022-12-19-103459.915797logomit20221219.png"
+            },
+            "x-origin": [
+                {
+                    "format": "unknown",
+                    "url": "https://dati.mit.gov.it/catalog/dataset/"
+                }
+            ]
+        }
+    },
+    "italy:milan:opendata-milano": {
+        "info": {
+            "contact": {
+                "url": "https://abahgat.github.io/opendata-milano/"
+            },
+            "description": "",
+            "title": "opendata-milano",
+            "version": "1",
+            "x-apisguru-categories": [
+                "open_data"
+            ],
+            "x-logo": {
+                "backgroundColor": "#FFFFFF",
+                "url": ""
+            },
+            "x-origin": [
+                {
+                    "format": "unknown",
+                    "url": "https://abahgat.github.io/opendata-milano/"
+                }
+            ]
+        }
+    }
+}
