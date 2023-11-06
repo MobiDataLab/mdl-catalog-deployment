@@ -90,5 +90,29 @@
                 }
             ]
         }
+    },
+    "europe:copernicus.eu": {
+        "info": {
+            "contact": {
+                "url": "https://www.copernicus.eu/en/access-data"
+            },
+            "description": "",
+            "title": "opendata-milano",
+            "version": "1",
+            "x-apisguru-categories": [
+                "open_data",
+                "satellite"
+            ],
+            "x-logo": {
+                "backgroundColor": "#FFFFFF",
+                "url": "https://www.copernicus.eu/themes/custom/copernicus/logo.svg"
+            },
+            "x-origin": [
+                {
+                    "format": "unknown",
+                    "url": "https://www.copernicus.eu/en/access-data"
+                }
+            ]
+        }
     }
 }
