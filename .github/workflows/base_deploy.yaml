@@ -97,7 +97,8 @@ jobs:
       run: npm i --no-optional
       working-directory: mdl-catalog-deployment
     - name: Validate API specs
-      run: npm run test ./APIs/ || echo "Ignoring specs validation"
+      continue-on-error: true
+      run: npm run test ./APIs/
       working-directory: mdl-catalog-deployment
     - name: Build deploy artifacts
       run: npm run deploy
